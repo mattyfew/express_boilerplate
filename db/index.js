@@ -1,4 +1,5 @@
-const dbUrl = 'postgres://mattfewer:postgres@localhost:5432/borderguru'
+const pg = require('pg')
+let dbUrl = 'postgres://mattfewer:postgres@localhost:5432/borderguru'
 
 dbUrl = require('url').parse(dbUrl)
 
@@ -20,13 +21,6 @@ pool.on('error', function(err) {
     console.log(err)
 })
 
-pool.connect(function(err, client, done) {
-    if (!err) {
-        client.query('SELECT * FROM cities', function(err, data) {
-            if (!err) {
-                console.log(data);
-            }
-            done();
-        });
-    }
-});
+module.exports = {
+  query: (text, params) => pool.query(text, params)
+}
